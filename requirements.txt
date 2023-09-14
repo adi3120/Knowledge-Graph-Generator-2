@@ -1,0 +1,4 @@
+clarifai
+langchain
+openai
+pyvis
