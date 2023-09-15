@@ -63,7 +63,7 @@ with st.sidebar:
     
 if submit:
     with st.spinner("Please wait, processing your request...."):
-        graphRenderer=GraphRenderer(1000,1000)
+        graphRenderer=GraphRenderer(500,400)
         langchainHandler=LangchainHandler()
         if selected["desc"]:
             data=langchainHandler.get_relation_triplets(desc)
@@ -96,7 +96,6 @@ if submit:
             data=assemblyHandler.get_audio_transcript(linkaudio)
             data=langchainHandler.get_relation_triplets(data)
             graphRenderer.draw_graph(data)
-    
     
 
     

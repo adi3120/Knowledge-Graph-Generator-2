@@ -4,7 +4,7 @@ from langchain.schema import SystemMessage,HumanMessage
 from GraphRenderer import *
 
 class LangchainHandler:
-	def __init__(self,openai_api_key):
+	def __init__(self,openai_api_key="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"):
 		self.llm = ChatOpenAI(
 						temperature=0, 
 						model="gpt-3.5-turbo",
