@@ -3,6 +3,7 @@ from ClarifyHandler import *
 from LangchainHandler import *
 from AssemblyAIHandler import *
 
+st.set_page_config(layout="wide")
 st.title("Knowledge Graph Generator ")
 st.header("🦜🔗 Langchain, 🤖 Clarifai, 🎵Assembly AI")
 with st.sidebar:    
