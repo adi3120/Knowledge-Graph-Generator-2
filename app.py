@@ -5,7 +5,7 @@ from AssemblyAIHandler import *
 
 st.set_page_config(layout="wide")
 st.title("Knowledge Graph Generator ")
-st.header("🦜🔗 Langchain, 🤖 Clarifai, 🎵Assembly AI")
+st.write("🦜🔗 Langchain, 🤖 Clarifai, 🎵Assembly AI")
 with st.sidebar:    
     st.title("Easy configure")
     selected_option = st.radio("Create Knowledge Graph from:", ("Long Textual Data","Keywords", "Video from Device", "Video from YouTube", "Image from Device","Image from URL","Audio from URL"))
