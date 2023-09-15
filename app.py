@@ -1,102 +1,22 @@
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import create_extraction_chain
-from pyvis.network import Network
-import networkx as nx
-import streamlit.components.v1 as components
-from langchain.schema import SystemMessage,HumanMessage
-from graphimage import draw_graph_from_image,draw_graph_from_image_link
-from graphvideo import draw_graph_from_video
-from graphvidlink import draw_graph_from_link
+from ClarifyHandler import *
+from LangchainHandler import *
+from AssemblyAIHandler import *
 
-openai_api_key=None
-schema = {
-	"properties": {
-		"subject_entity": {"type": "string"},
-		"relation_type": {"type": "string"},
-		"target_entity": {"type": "string"},
-	},
-	"required": ["subject_entity", "relation_type", "target_entity"],
-}
-
-def draw_graph(triplets):
-    edge_dict = {}
-
-    G = nx.DiGraph()
-    for triplet in triplets:
-        subject_entity = triplet["subject_entity"]
-        relation_type = triplet["relation_type"]
-        target_entity = triplet["target_entity"]
-
-        edge_key = (subject_entity, relation_type)
-        if edge_key in edge_dict:
-            edge_dict[edge_key].append(target_entity)
-        else:
-            edge_dict[edge_key] = [target_entity]
-
-        G.add_node(subject_entity)
-        G.add_nodes_from(edge_dict[edge_key]) 
-
-    for edge_key, target_entities in edge_dict.items():
-        for target_entity in target_entities:
-            G.add_edge(edge_key[0], target_entity, label=edge_key[1],arrow='to')
-
-    net = Network(notebook=True,directed=True)
-    net.from_nx(G)
-    net.show("file.html")
-    HtmlFile = open("file.html", 'r', encoding='utf-8')
-    source_code = HtmlFile.read() 
-    components.html(source_code, height=1000)
-    
-
-def draw_graph_from_text(desc):
-    global openai_api_key
-    llm = ChatOpenAI(
-					temperature=0, 
-					model="gpt-3.5-turbo",
-					openai_api_key=openai_api_key
-				)
-    message = [SystemMessage(content=("Your task is to process the text and retain only the relevant information in the form of entity-relation-entity triples."))]
-    llm(message)
-    chain = create_extraction_chain(schema, llm)
-    data=chain.run(desc)
-    draw_graph(data)
-    
-    
-	
-    
-def draw_graph_from_keywords(keywords):
-    global openai_api_key
-    llm = ChatOpenAI(
-					temperature=0, 
-					model="gpt-3.5-turbo",
-					openai_api_key=openai_api_key
-				)
-    message=[
-		SystemMessage(content=("Provide short summary for each of the following topic(s) and try to relate similar topic")),
-		HumanMessage(content=(keywords))
-	]
-    data=str(llm(message))
-    message = [SystemMessage(content=("Your task is to process the text and retain only the relevant information in the form of entity-relation-entity triples."))]
-    llm(message)
-    chain = create_extraction_chain(schema, llm)
-    data=chain.run(data)
-    print(data)
-    draw_graph(data)	
-    
-
+st.title("Knowledge Graph Generator ")
+st.header("🦜🔗 Langchain, 🤖 Clarifai, 🎵Assembly AI")
 with st.sidebar:    
-    st.title("Knowledge Graph Generator")
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    selected_option = st.radio("Create Knowledge Graph from:", ("Long Textual Data","Keywords", "Video from Device", "Video from YouTube", "Image from Device","Image from URL"))
+    st.title("Easy configure")
+    selected_option = st.radio("Create Knowledge Graph from:", ("Long Textual Data","Keywords", "Video from Device", "Video from YouTube", "Image from Device","Image from URL","Audio from URL"))
     selected={
         "desc":False,
         "keywords":False,
         "video":False,
         "link":False,
         "image":False,
-        "imagelink":False
-	}
+        "imagelink":False,
+        "audiolink":False
+    }
     if(selected_option=="Long Textual Data"):
         desc=st.text_area("Enter Text Description")
         for i in selected.keys():
@@ -133,32 +53,50 @@ with st.sidebar:
             selected[i]=False
             if i=="imagelink":
                 selected[i]=True
+    elif(selected_option=="Audio from URL"):
+        linkaudio = st.text_input("Enter audio file link")
+        for i in selected.keys():
+            selected[i]=False
+            if i=="audiolink":
+                selected[i]=True
     submit=st.button("Create Mind Map")
     
-if submit and openai_api_key:
-    st.title("Knowledge Graph Generator")
-    with st.spinner('Making your graph...'):
+if submit:
+    with st.spinner("Please wait, processing your request...."):
+        graphRenderer=GraphRenderer(1000,1000)
+        langchainHandler=LangchainHandler()
         if selected["desc"]:
-            draw_graph_from_text(desc)
+            data=langchainHandler.get_relation_triplets(desc)
+            graphRenderer.draw_graph(data)
         elif selected["keywords"]:
-            draw_graph_from_keywords(keywords)
-        elif selected["video"]:
-            data=draw_graph_from_video(uploaded_file_video)
-            draw_graph_from_text(data)
-        elif selected["link"]:
-            with st.spinner("Downloading the video"):
-                 draw_graph_from_link(linkid)
-            with open("video.mp4","rb") as f:
-                 data=draw_graph_from_video(f)
-                 draw_graph_from_text(data)
-        elif selected["image"]:
-            data=draw_graph_from_image(uploaded_file_image)
-            draw_graph_from_text(data)
-        elif selected["imagelink"]:
-            data=draw_graph_from_image_link(linkimg)
-            draw_graph_from_text(data)
-            
+            data=langchainHandler.keyword_prompt(keywords)
+            data=langchainHandler.get_relation_triplets(data)
+            graphRenderer.draw_graph(data)
+        elif selected["video"] or selected["link"] or selected["image"] or selected["imagelink"]:
+            clarifyHandler=ClarifyHandler()
+            if selected["video"]:
+                    data=clarifyHandler.get_video_captions_from_file(uploaded_file_video)
+                    data=langchainHandler.get_relation_triplets(data)
+                    graphRenderer.draw_graph(data)
+            elif selected["link"]:
+                    data=clarifyHandler.get_video_captions_from_url(linkid)
+                    data=langchainHandler.get_relation_triplets(data)
+                    graphRenderer.draw_graph(data)
+            elif selected["image"]:
+                    st.sidebar.image(uploaded_file_image,width=200)
+                    data=clarifyHandler.get_image_captions_from_file(uploaded_file_image)
+                    data=langchainHandler.get_relation_triplets(data)
+                    graphRenderer.draw_graph(data)
+            elif selected["imagelink"]:
+                    data=clarifyHandler.get_image_captions_from_url(linkimg)
+                    data=langchainHandler.get_relation_triplets(data)
+                    graphRenderer.draw_graph(data)
+        elif selected["audiolink"]:
+            assemblyHandler=AssemblyHandler()
+            data=assemblyHandler.get_audio_transcript(linkaudio)
+            data=langchainHandler.get_relation_triplets(data)
+            graphRenderer.draw_graph(data)
     
-	
+    
 
     

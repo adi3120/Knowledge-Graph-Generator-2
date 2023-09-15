@@ -88,8 +88,8 @@
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "tree", "label": "tree", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ocean", "label": "ocean", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "middle", "label": "middle", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "sunset", "label": "sunset", "shape": "dot", "size": 10}]);
-                  edges = new vis.DataSet([{"arrow": "to", "arrows": "to", "from": "tree", "label": "location", "to": "ocean", "width": 1}, {"arrow": "to", "arrows": "to", "from": "tree", "label": "position", "to": "middle", "width": 1}, {"arrow": "to", "arrows": "to", "from": "tree", "label": "background", "to": "sunset", "width": 1}]);
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "pi", "label": "pi", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "digits", "label": "digits", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "square root of four", "label": "square root of four", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "precision", "label": "precision", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"arrow": "to", "arrows": "to", "from": "pi", "label": "contains", "to": "digits", "width": 1}, {"arrow": "to", "arrows": "to", "from": "square root of four", "label": "contains", "to": "precision", "width": 1}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
