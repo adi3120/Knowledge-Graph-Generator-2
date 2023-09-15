@@ -25,7 +25,7 @@ class GraphRenderer:
 				G.add_nodes_from(edge_dict[edge_key]) 
 			for edge_key, target_entities in edge_dict.items():
 				for target_entity in target_entities:
-					G.add_edge(edge_key[0], target_entity, label=edge_key[1],arrow='to')
+					G.add_edge(edge_key[0], target_entity, label=edge_key[1],arrow='to',length=200)
 			net = Network(notebook=True,directed=True)
 			net.from_nx(G)
 			net.show("file.html")
