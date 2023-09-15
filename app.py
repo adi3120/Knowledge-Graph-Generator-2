@@ -64,7 +64,7 @@ with st.sidebar:
     
 if submit:
     with st.spinner("Please wait, processing your request...."):
-        graphRenderer=GraphRenderer(500,400)
+        graphRenderer=GraphRenderer(500,450)
         langchainHandler=LangchainHandler()
         if selected["desc"]:
             data=langchainHandler.get_relation_triplets(desc)
