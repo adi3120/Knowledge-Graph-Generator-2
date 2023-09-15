@@ -31,4 +31,4 @@ class GraphRenderer:
 			net.show("file.html")
 			HtmlFile = open("file.html", 'r', encoding='utf-8')
 			source_code = HtmlFile.read() 
-			components.html(source_code, width=self.width,height=self.height)
+			components.html(source_code,height=self.height)
