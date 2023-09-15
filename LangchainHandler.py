@@ -27,7 +27,7 @@ class LangchainHandler:
 		return data
 	
 	def get_relation_triplets(self,data):
-		message = [SystemMessage(content=("Your task is to process the text and retain only the relevant information in the form of entity-relation-entity triples."))]
+		message = [SystemMessage(content=("Your task is to process this text information in the form of entity-relation-entity triples."))]
 		self.llm(message)
 		chain = create_extraction_chain(self.schema,self.llm)
 		data=chain.run(data)
