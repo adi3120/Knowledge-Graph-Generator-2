@@ -98,5 +98,20 @@ if submit:
             data=langchainHandler.get_relation_triplets(data)
             graphRenderer.draw_graph(data)
     
-
+footer="""<style>
+.footer {
+position:fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: black;
+color: white;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed by Aditya Yadav - Streamlit LLM Hackathon🤖</p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)
     
