@@ -16,6 +16,7 @@ class GraphRenderer:
 				subject_entity = triplet["subject_entity"]
 				relation_type = triplet["relation_type"]
 				target_entity = triplet["target_entity"]
+				G.add_node(subject_entity, size=30, color='#FF5733', font={'bold': True})
 				if '\n' in target_entity:
 					G.add_node(relation_type)
 					G.add_edge(subject_entity, relation_type)
