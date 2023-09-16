@@ -9,6 +9,7 @@ class GraphRenderer:
 		self.height=height
 
 	def draw_graph(self,triplets):
+		st.write(triplets)
 		with st.spinner("Rendering Graph...."):
 			edge_dict = {}
 			G = nx.DiGraph()
