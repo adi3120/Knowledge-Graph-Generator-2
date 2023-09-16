@@ -74,6 +74,7 @@ if submit:
             data=langchainHandler.get_relation_triplets(data)
             graphRenderer.draw_graph(data)
         elif selected["video"] or selected["link"] or selected["image"] or selected["imagelink"]:
+            st.info("Model Takes a while to deploy after submitting your input, so if error comes try after 5 minutes. Once the model is deployed there will be no errors!")
             clarifyHandler=ClarifyHandler()
             if selected["video"]:
                     data=clarifyHandler.get_video_captions_from_file(uploaded_file_video)
