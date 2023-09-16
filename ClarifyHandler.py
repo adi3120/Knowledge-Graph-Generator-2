@@ -39,6 +39,11 @@ class ClarifyHandler:
 				),
 				metadata=self.metadata
 			)
+			if post_model_outputs_response.status.code == status_code_pb2.MODEL_DEPLOYING:
+				st.error("Model is being deployed please wait!!!")
+				return None
+		
+
 			if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
 				print(post_model_outputs_response.status)
 				raise Exception("Post model outputs failed, status: " + post_model_outputs_response.status.description)
