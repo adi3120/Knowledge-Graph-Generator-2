@@ -31,7 +31,7 @@ class GraphRenderer:
 					for entity in target_entities:
 					    G.add_node(entity)
 					    G.add_edge(relation_type, entity)
-				elif 'and' in target_entity:
+				elif 'and' in target_entity.split(' '):
 					G.add_node(relation_type)
 					G.add_edge(subject_entity, relation_type)
 					
@@ -39,7 +39,7 @@ class GraphRenderer:
 					for entity in target_entities:
 					    G.add_node(entity)
 					    G.add_edge(relation_type, entity)
-				elif 'or' in target_entity:
+				elif 'or' in target_entity.split(' '):
 					G.add_node(relation_type)
 					G.add_edge(subject_entity, relation_type)
 					
