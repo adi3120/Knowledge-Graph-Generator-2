@@ -31,24 +31,28 @@ with st.sidebar:
             if i=="keywords":
                 selected[i]=True
     elif(selected_option=="Video from Device"):
+        st.info("Model Takes a while to deploy after submitting your input, so if error comes try after 5 minutes. Once the model is deployed there will be no errors!")
         uploaded_file_video = st.file_uploader("Choose a video...", type=["mp4", "mpeg"])
         for i in selected.keys():
             selected[i]=False
             if i=="video":
                 selected[i]=True
     elif(selected_option=="Video from YouTube"):
+        st.info("Model Takes a while to deploy after submitting your input, so if error comes try after 5 minutes. Once the model is deployed there will be no errors!")
         linkid=st.text_input("Enter youtube video id")
         for i in selected.keys():
             selected[i]=False
             if i=="link":
                 selected[i]=True
     elif(selected_option=="Image from Device"):
+        st.info("Model Takes a while to deploy after submitting your input, so if error comes try after 5 minutes. Once the model is deployed there will be no errors!")
         uploaded_file_image = st.file_uploader("Choose an image...", type=["jpeg", "jpg","png"])
         for i in selected.keys():
             selected[i]=False
             if i=="image":
                 selected[i]=True
     elif(selected_option=="Image from URL"):
+        st.info("Model Takes a while to deploy after submitting your input, so if error comes try after 5 minutes. Once the model is deployed there will be no errors!")
         linkimg=st.text_input("Enter image link")
         for i in selected.keys():
             selected[i]=False
@@ -74,7 +78,6 @@ if submit:
             data=langchainHandler.get_relation_triplets(data)
             graphRenderer.draw_graph(data)
         elif selected["video"] or selected["link"] or selected["image"] or selected["imagelink"]:
-            st.info("Model Takes a while to deploy after submitting your input, so if error comes try after 5 minutes. Once the model is deployed there will be no errors!")
             clarifyHandler=ClarifyHandler()
             if selected["video"]:
                     data=clarifyHandler.get_video_captions_from_file(uploaded_file_video)
