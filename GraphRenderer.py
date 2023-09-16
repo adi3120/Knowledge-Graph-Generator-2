@@ -15,15 +15,8 @@ class GraphRenderer:
 				subject_entity = triplet["subject_entity"]
 				relation_type = triplet["relation_type"]
 				target_entity = triplet["target_entity"]
-				G.add_node(subject_entity, size=20, color='#6a0ba1', font={'bold': True})
-				if '\n' in target_entity:
-					G.add_node(relation_type)
-					G.add_edge(subject_entity, relation_type)
-					target_entities = target_entity.split('\n')
-					for entity in target_entities:
-					    G.add_node(entity)
-					    G.add_edge(relation_type, entity)
-				elif ',' in target_entity:
+				G.add_node(subject_entity, size=20, color='#3924f2', font_weight='bold')
+				if ',' in target_entity:
 					G.add_node(relation_type)
 					G.add_edge(subject_entity, relation_type)
 					
