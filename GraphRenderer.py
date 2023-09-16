@@ -11,22 +11,29 @@ class GraphRenderer:
 	def draw_graph(self,triplets):
 		st.write(triplets)
 		with st.spinner("Rendering Graph...."):
-			edge_dict = {}
 			G = nx.DiGraph()
 			for triplet in triplets:
 				subject_entity = triplet["subject_entity"]
 				relation_type = triplet["relation_type"]
 				target_entity = triplet["target_entity"]
-				edge_key = (subject_entity, relation_type)
-				if edge_key in edge_dict:
-					edge_dict[edge_key].append(target_entity)
+				if '\n' in target_entity:
+					G.add_node(relation_type)
+					G.add_edge(subject_entity, relation_type)
+					target_entities = target_entity.split('\n')
+					for entity in target_entities:
+					    G.add_node(entity)
+					    G.add_edge(relation_type, entity)
+				elif ',' in target_entity:
+					G.add_node(relation_type)
+					G.add_edge(subject_entity, relation_type)
+					
+					target_entities = target_entity.split(',')
+					for entity in target_entities:
+					    G.add_node(entity)
+					    G.add_edge(relation_type, entity)
 				else:
-					edge_dict[edge_key] = [target_entity]
-				G.add_node(subject_entity)
-				G.add_nodes_from(edge_dict[edge_key]) 
-			for edge_key, target_entities in edge_dict.items():
-				for target_entity in target_entities:
-					G.add_edge(edge_key[0], target_entity, label=edge_key[1],arrow='to',length=250)
+					G.add_node(target_entity)
+					G.add_edge(subject_entity, target_entity,label=relation_type,arrow='to')
 			net = Network(notebook=True,directed=True)
 			net.from_nx(G)
 			net.show("file.html")
