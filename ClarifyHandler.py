@@ -71,7 +71,7 @@ class ClarifyHandler:
 			except Exception as e:
 				st.error(f"An error occurred: {e}")
 		with open("video.mp4","rb") as f:
-			self.get_video_captions_from_file(f)
+			return self.get_video_captions_from_file(f)
 
 	def get_image_captions_from_file(self,uploaded_file_image):
 		file_bytes = uploaded_file_image.read()
