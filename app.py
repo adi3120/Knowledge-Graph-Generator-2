@@ -77,21 +77,25 @@ if submit:
             clarifyHandler=ClarifyHandler()
             if selected["video"]:
                     data=clarifyHandler.get_video_captions_from_file(uploaded_file_video)
-                    data=langchainHandler.get_relation_triplets(data)
-                    graphRenderer.draw_graph(data)
+                    if data!=None:
+                        data=langchainHandler.get_relation_triplets(data)
+                        graphRenderer.draw_graph(data)
             elif selected["link"]:
                     data=clarifyHandler.get_video_captions_from_url(linkid)
-                    data=langchainHandler.get_relation_triplets(data)
-                    graphRenderer.draw_graph(data)
+                    if data!=None:
+                        data=langchainHandler.get_relation_triplets(data)
+                        graphRenderer.draw_graph(data)
             elif selected["image"]:
                     st.sidebar.image(uploaded_file_image,width=200)
                     data=clarifyHandler.get_image_captions_from_file(uploaded_file_image)
-                    data=langchainHandler.get_relation_triplets(data)
-                    graphRenderer.draw_graph(data)
+                    if data!=None:
+                        data=langchainHandler.get_relation_triplets(data)
+                        graphRenderer.draw_graph(data)
             elif selected["imagelink"]:
                     data=clarifyHandler.get_image_captions_from_url(linkimg)
-                    data=langchainHandler.get_relation_triplets(data)
-                    graphRenderer.draw_graph(data)
+                    if data!=None:
+                        data=langchainHandler.get_relation_triplets(data)
+                        graphRenderer.draw_graph(data)
         elif selected["audiolink"]:
             assemblyHandler=AssemblyHandler()
             data=assemblyHandler.get_audio_transcript(linkaudio)
